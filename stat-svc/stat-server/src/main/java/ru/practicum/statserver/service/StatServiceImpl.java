@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.statdto.HitDto;
+import ru.practicum.statdto.StatParamDto;
 import ru.practicum.statdto.ViewDto;
 import ru.practicum.statserver.mapper.StatMapper;
 import ru.practicum.statserver.repository.StatRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,18 +23,18 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public List<ViewDto> getStat(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
+    public List<ViewDto> getStat(StatParamDto statParam) {
         Sort sort = Sort.by("hits").descending();
-        if (Objects.isNull(uris)) {
-            if (unique)
-                return statRepository.getAllUniqueIpUri(start, end, sort);
+        if (Objects.isNull(statParam.getUris())) {
+            if (statParam.isUnique())
+                return statRepository.getAllUniqueIpUri(statParam.getStart(), statParam.getEnd(), sort);
             else
-                return statRepository.getAllUri(start, end, sort);
+                return statRepository.getAllUri(statParam.getStart(), statParam.getEnd(), sort);
         } else {
-            if (unique)
-                return statRepository.getCertainUniqueIpUris(start, end, uris, sort);
+            if (statParam.isUnique())
+                return statRepository.getCertainUniqueIpUris(statParam.getStart(), statParam.getEnd(), statParam.getUris(), sort);
             else
-                return statRepository.getCertainUris(start, end, uris, sort);
+                return statRepository.getCertainUris(statParam.getStart(), statParam.getEnd(), statParam.getUris(), sort);
         }
     }
 }

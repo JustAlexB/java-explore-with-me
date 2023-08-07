@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.statdto.HitDto;
 import ru.practicum.statdto.ViewDto;
+import ru.practicum.statdto.StatParamDto;
+import ru.practicum.statserver.mapper.StatMapper;
 import ru.practicum.statserver.service.StatService;
 
 import java.time.LocalDateTime;
@@ -32,6 +34,7 @@ public class StatController {
                                        @RequestParam(required = false) String[] uris,
                                        @RequestParam(required = false, defaultValue = "false") boolean unique) {
         log.info("запрос статистики для start={}, end={}, uris={} and unique={}", start, end, uris, unique);
-        return statService.getStat(start, end, uris, unique);
+        StatParamDto statParam = StatMapper.toStatParam(start, end, uris, unique);
+        return statService.getStat(statParam);
     }
 }

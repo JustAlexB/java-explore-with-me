@@ -26,15 +26,17 @@ public class StatServiceImpl implements StatService {
     public List<ViewDto> getStat(StatParamDto statParam) {
         Sort sort = Sort.by("hits").descending();
         if (Objects.isNull(statParam.getUris())) {
-            if (statParam.isUnique())
+            if (statParam.isUnique()) {
                 return statRepository.getAllUniqueIpUri(statParam.getStart(), statParam.getEnd(), sort);
-            else
+            } else {
                 return statRepository.getAllUri(statParam.getStart(), statParam.getEnd(), sort);
+            }
         } else {
-            if (statParam.isUnique())
+            if (statParam.isUnique()) {
                 return statRepository.getCertainUniqueIpUris(statParam.getStart(), statParam.getEnd(), statParam.getUris(), sort);
-            else
+            } else {
                 return statRepository.getCertainUris(statParam.getStart(), statParam.getEnd(), statParam.getUris(), sort);
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ public class StatController {
     public List<ViewDto> getStatistics(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                                        @RequestParam(required = false) String[] uris,
-                                       @RequestParam(required = false, defaultValue = "false") boolean unique) {
+                                       @RequestParam(defaultValue = "false") boolean unique) {
         log.info("запрос статистики для start={}, end={}, uris={} and unique={}", start, end, uris, unique);
         StatParamDto statParam = StatMapper.toStatParam(start, end, uris, unique);
         return statService.getStat(statParam);
